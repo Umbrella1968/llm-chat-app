@@ -44,6 +44,19 @@ export default {
 			return new Response("Method not allowed", { status: 405 });
 		}
 
+		if (url.pathname === "/api/ip") {
+            if (request.method !== "GET") {
+                return new Response("Method not allowed", { status: 405 });
+            }
+
+            const ip = request.headers.get("cf-connecting-ip") ?? "Unknown";
+                return new Response(JSON.stringify({ ip }), {
+                    headers: { "content-type": "application/json" },
+                });
+        }
+
+
+
 		// Handle 404 for unmatched routes
 		return new Response("Not found", { status: 404 });
 	},

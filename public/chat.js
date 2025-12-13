@@ -9,6 +9,13 @@ const chatMessages = document.getElementById("chat-messages");
 const userInput = document.getElementById("user-input");
 const sendButton = document.getElementById("send-button");
 const typingIndicator = document.getElementById("typing-indicator");
+const visitorIp = document.getElementById("visitor-ip");
+
+
+// Load visitor IP on page load
+fetchVisitorIp();
+
+
 
 // Chat state
 let chatHistory = [
@@ -156,3 +163,27 @@ function addMessageToChat(role, content) {
 	// Scroll to bottom
 	chatMessages.scrollTop = chatMessages.scrollHeight;
 }
+
+/**
+ * Fetch and render visitor IP address
+ */
+async function fetchVisitorIp() {
+        if (!visitorIp) return;
+
+        try {
+                const response = await fetch("/api/ip");
+                if (!response.ok) {
+                        throw new Error("Failed to load IP");
+                }
+
+                const data = (await response.json());
+                const ipText = data.ip ?? "Unavailable";
+                visitorIp.textContent = `Your IP address: ${ipText}`;
+        } catch (error) {
+                console.error("Error fetching IP:", error);
+                visitorIp.textContent = "Unable to load IP address.";
+        }
+}
+
+
+
