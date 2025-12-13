@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <title>HLS 播放示例</title>
+</head>
+<body>
+
+<video id="video_live" controls></video>
+
+<!-- 引入 hls.js -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script>
+    const video = document.getElementById('video_live');
+    const hlsUrl = 'http://144.34.225.78:8080/live/livestream.m3u8';
+
+    if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.attachMedia(video);
+
+        hls.loadSource(hlsUrl);
+        
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            video.play();
+        });
+    } else {
+        alert('当前浏览器不支持 HLS 播放');
+    }
+</script>
+
+</body>
+</html>
+
+
